@@ -14,6 +14,7 @@ import (
 type issue struct {
 	ID          string `json:"id"`
 	Title       string `json:"title"`
+	Type        string `json:"type"`
 	Description string `json:"description"`
 	Status      string `json:"status"`
 }
@@ -94,6 +95,7 @@ func postIssues(c *gin.Context) {
 		ID:          strconv.Itoa(len(tempDB) + 1),
 		Title:       reqIssue.Title,
 		Description: reqIssue.Description,
+		Type:        reqIssue.Type,
 		Status:      statusActive,
 	}
 
@@ -134,6 +136,7 @@ func updateIssues(c *gin.Context) {
 
 	issue.Title = reqIssue.Title
 	issue.Description = reqIssue.Description
+	issue.Type = reqIssue.Type
 
 	tempDB[id] = issue
 
@@ -150,6 +153,10 @@ func getAndValidateData(c *gin.Context) (issue, error) {
 
 	if reqIssue.Description == "" {
 		return reqIssue, errors.New("description can't be empty")
+	}
+
+	if reqIssue.Type == "" {
+		return reqIssue, errors.New("Type can't be empty")
 	}
 
 	return reqIssue, nil
