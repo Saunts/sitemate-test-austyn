@@ -55,6 +55,7 @@ func initTempDB() {
 		ID:          "1",
 		Title:       "Button is misaligned",
 		Description: "Button is misaligned",
+		Type:        "UI",
 		Status:      statusActive,
 	}
 
@@ -62,12 +63,13 @@ func initTempDB() {
 		ID:          "2",
 		Title:       "Font is wrong when on mobile",
 		Description: "-",
+		Type:        "UI",
 		Status:      statusActive,
 	}
 }
 
 func getIssues(c *gin.Context) {
-	response := convertDataToResponse(tempDB)
+	response := convertDataToResponse()
 
 	c.IndentedJSON(http.StatusOK, response)
 }
@@ -156,13 +158,13 @@ func getAndValidateData(c *gin.Context) (issue, error) {
 	}
 
 	if reqIssue.Type == "" {
-		return reqIssue, errors.New("Type can't be empty")
+		return reqIssue, errors.New("type can't be empty")
 	}
 
 	return reqIssue, nil
 }
 
-func convertDataToResponse(data map[string]issue) []issue {
+func convertDataToResponse() []issue {
 	response := []issue{}
 
 	for _, data := range tempDB {
